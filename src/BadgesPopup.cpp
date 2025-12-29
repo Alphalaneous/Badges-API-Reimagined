@@ -67,9 +67,9 @@ bool BadgesPopup::setup(UserInfo userInfo, const std::vector<BadgeInfo>& info, i
 
     m_title = CCLabelBMFont::create(info[0].name.c_str(), "bigFont.fnt");
     m_title->setID("badge-name");
+    m_title->limitLabelWidth(360, 0.8f, 0.05f);
 
     m_title->setPosition({winSize.width/2, winSize.height - 50});
-    m_title->setScale(0.8f);
     m_title->setOpacity(0);
 
     m_title->runAction(CCFadeTo::create(0.1f, 255));
