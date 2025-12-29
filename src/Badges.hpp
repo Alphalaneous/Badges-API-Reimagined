@@ -3,12 +3,22 @@
 
 class BadgesCommentCell;
 class BadgesProfilePage;
+class BadgesPopup;
 
 class Badges {
 public:
     static Badges* get();
 
     void showBadge(const Badge& badge);
+
+    void setName(const std::string& id, const std::string& name);
+    std::string_view getName(const std::string& id);
+
+    void setDescription(const std::string& id, const std::string& description);
+    std::string_view getDescription(const std::string& id);
+
+    void setCreateBadgeCallback(const std::string& id, BadgeCallback&& createBadge);
+    void setProfileCallback(const std::string& id, ProfileCallback&& onProfile);
     void registerBadge(const std::string& id, const std::string& name, const std::string& description, BadgeCallback&& createBadge, ProfileCallback&& onProfile);
     void unregisterBadge(const std::string& id);
 
@@ -18,4 +28,5 @@ private:
 
     friend class BadgesCommentCell;
     friend class BadgesProfilePage;
+    friend class BadgesPopup;
 };

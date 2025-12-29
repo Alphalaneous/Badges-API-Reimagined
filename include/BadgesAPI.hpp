@@ -46,6 +46,42 @@ namespace BadgesAPI {
         Fn* fn = nullptr;
     };
 
+    struct SetBadgeNameEvent final : geode::Event {
+        SetBadgeNameEvent() {}
+        using Fn = void(const std::string& id, const std::string& name);
+        Fn* fn = nullptr;
+    };
+
+    struct GetBadgeNameEvent final : geode::Event {
+        GetBadgeNameEvent() {}
+        using Fn = std::string_view(const std::string& id);
+        Fn* fn = nullptr;
+    };
+
+    struct SetBadgeDescriptionEvent final : geode::Event {
+        SetBadgeDescriptionEvent() {}
+        using Fn = void(const std::string& id, const std::string& name);
+        Fn* fn = nullptr;
+    };
+
+    struct GetBadgeDescriptionEvent final : geode::Event {
+        GetBadgeDescriptionEvent() {}
+        using Fn = std::string_view(const std::string& id);
+        Fn* fn = nullptr;
+    };
+
+    struct SetBadgeCreateCallbackEvent final : geode::Event {
+        SetBadgeCreateCallbackEvent() {}
+        using Fn = void(const std::string& id, BadgeCallback&& createBadge);
+        Fn* fn = nullptr;
+    };
+
+    struct SetBadgeProfileCallbackEvent final : geode::Event {
+        SetBadgeProfileCallbackEvent() {}
+        using Fn = void(const std::string& id, ProfileCallback&& onProfile);
+        Fn* fn = nullptr;
+    };
+
     struct ShowBadgeEvent final : geode::Event {
         ShowBadgeEvent() {}
         using Fn = void(const Badge& badge);
@@ -92,6 +128,64 @@ namespace BadgesAPI {
             return event.fn;
         })();
         if (fn) fn(id);
+    }
+
+    inline void setName(const std::string& id, const std::string& name) {
+        static auto fn = ([] {
+            SetBadgeNameEvent event;
+            event.post();
+            return event.fn;
+        })();
+        if (fn) fn(id, name);
+    }
+
+    inline std::string_view getName(const std::string& id) {
+        static auto fn = ([] {
+            GetBadgeNameEvent event;
+            event.post();
+            return event.fn;
+        })();
+        if (fn) return fn(id);
+        return "";
+    }
+
+    inline void setDescription(const std::string& id, const std::string& description) {
+        static auto fn = ([] {
+            SetBadgeDescriptionEvent event;
+            event.post();
+            return event.fn;
+        })();
+        if (fn) fn(id, description);
+    }
+
+    inline std::string_view getDescription(const std::string& id) {
+        static auto fn = ([] {
+            GetBadgeDescriptionEvent event;
+            event.post();
+            return event.fn;
+        })();
+        if (fn) return fn(id);
+        return "";
+    }
+
+    template <typename F>
+    inline void setCreateBadgeCallback(const std::string& id, F&& createBadge) {
+        static auto fn = ([] {
+            SetBadgeCreateCallbackEvent event;
+            event.post();
+            return event.fn;
+        })();
+        if (fn) fn(id, createBadge);
+    }
+
+    template <typename F>
+    inline void setProfileCallback(const std::string& id, F&& onProfile) {
+        static auto fn = ([] {
+            SetBadgeProfileCallbackEvent event;
+            event.post();
+            return event.fn;
+        })();
+        if (fn) fn(id, onProfile);
     }
 
     inline void showBadge(const Badge& badge) {

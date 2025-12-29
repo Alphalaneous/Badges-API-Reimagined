@@ -18,7 +18,7 @@ void BadgesProfilePage::loadPageFromUserInfo(GJUserScore* score) {
 
     int originalBadge = score->m_modBadge;
 
-    UserInfo info = {
+    fields->m_userInfo = {
         score->m_userName,
         score->m_userID,
         score->m_accountID,
@@ -65,7 +65,7 @@ void BadgesProfilePage::loadPageFromUserInfo(GJUserScore* score) {
             updateBadges();
             fields->m_usernameMenu->updateLayout();
 
-            Badges::get()->onProfile(this, info);
+            Badges::get()->onProfile(this, fields->m_userInfo);
         }
         else {
             fields->m_badges.clear();
@@ -73,7 +73,7 @@ void BadgesProfilePage::loadPageFromUserInfo(GJUserScore* score) {
             updateBadges();
             fields->m_usernameMenu->updateLayout();
 
-            Badges::get()->onProfile(this, info);
+            Badges::get()->onProfile(this, fields->m_userInfo);
         }
     }
     else {
@@ -131,13 +131,13 @@ void BadgesProfilePage::loadPageFromUserInfo(GJUserScore* score) {
             m_mainLayer->addChild(fields->m_badgeMenu);
 
             updateBadges();
-            Badges::get()->onProfile(this, info);
+            Badges::get()->onProfile(this, fields->m_userInfo);
         }
         else {
             fields->m_badges.clear();
             fields->m_badgeMenu->removeAllChildren();
             updateBadges();
-            Badges::get()->onProfile(this, info);
+            Badges::get()->onProfile(this, fields->m_userInfo);
         }
     }
 }
@@ -232,5 +232,5 @@ void BadgesProfilePage::addToBadgeContainer(const BadgeInfo& info) {
 void BadgesProfilePage::onBadges(CCObject* sender) {
     auto fields = m_fields.self();
 
-    BadgesPopup::create(fields->m_badges, sender->getTag())->show();
+    BadgesPopup::create(fields->m_userInfo, fields->m_badges, sender->getTag())->show();
 }

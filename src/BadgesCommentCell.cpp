@@ -48,7 +48,7 @@ void BadgesCommentCell::loadFromComment(GJComment* comment) {
     fields->m_usernameMenu->removeChild(badge);
     fields->m_usernameMenu->insertAfter(fields->m_badgesButton, fields->m_usernameNode);
 
-    UserInfo info = {
+    fields->m_userInfo = {
         comment->m_userName,
         comment->m_userID,
         comment->m_accountID,
@@ -57,7 +57,7 @@ void BadgesCommentCell::loadFromComment(GJComment* comment) {
 
     updateBadges();
 
-    Badges::get()->onProfile(this, info);
+    Badges::get()->onProfile(this, fields->m_userInfo);
 }
 
 void BadgesCommentCell::addBadge(const BadgeInfo& info) {
@@ -103,5 +103,5 @@ void BadgesCommentCell::addToBadgeContainer(const BadgeInfo& info) {
 void BadgesCommentCell::onBadges(CCObject* sender) {
     auto fields = m_fields.self();
 
-    BadgesPopup::create(fields->m_badges, sender->getTag())->show();
+    BadgesPopup::create(fields->m_userInfo, fields->m_badges, sender->getTag())->show();
 }

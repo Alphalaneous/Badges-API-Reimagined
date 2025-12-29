@@ -19,6 +19,7 @@ class $modify(BadgesProfilePage, ProfilePage) {
         CCMenuItemSpriteExtra* m_badgesButton;
         std::vector<BadgeInfo> m_badges;
         bool m_alterativeDesign;
+        UserInfo m_userInfo;
     };
     
     bool init(int accountID, bool ownProfile);

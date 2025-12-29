@@ -1,4 +1,5 @@
 #include "Badges.hpp"
+#include "BadgesAPI.hpp"
 #include "BadgesCommentCell.hpp"
 #include "BadgesProfilePage.hpp"
 
@@ -21,6 +22,42 @@ void Badges::showBadge(const Badge& badge) {
     else if (auto profile = static_cast<BadgesProfilePage*>(typeinfo_cast<ProfilePage*>(badge.targetNode.data()))) {
         profile->addBadge(badgeIter->second);
     }
+}
+
+void Badges::setName(const std::string& id, const std::string& name) {
+    auto badgeIter = m_badges.find(id);
+    if (badgeIter == m_badges.end()) return;
+    badgeIter->second.name = name;
+}
+
+std::string_view Badges::getName(const std::string& id) {
+    auto badgeIter = m_badges.find(id);
+    if (badgeIter == m_badges.end()) return "";
+    return badgeIter->second.name;
+}
+
+void Badges::setDescription(const std::string& id, const std::string& description) {
+    auto badgeIter = m_badges.find(id);
+    if (badgeIter == m_badges.end()) return;
+    badgeIter->second.description = description;
+}
+
+std::string_view Badges::getDescription(const std::string& id) {
+    auto badgeIter = m_badges.find(id);
+    if (badgeIter == m_badges.end()) return "";
+    return badgeIter->second.description;
+}
+
+void Badges::setCreateBadgeCallback(const std::string& id, BadgeCallback&& createBadge) {
+    auto badgeIter = m_badges.find(id);
+    if (badgeIter == m_badges.end()) return;
+    badgeIter->second.createBadge = createBadge;
+}
+
+void Badges::setProfileCallback(const std::string& id, ProfileCallback&& onProfile) {
+    auto badgeIter = m_badges.find(id);
+    if (badgeIter == m_badges.end()) return;
+    badgeIter->second.onProfile = onProfile;
 }
 
 void Badges::registerBadge(const std::string& id, const std::string& name, const std::string& description, BadgeCallback&& createBadge, ProfileCallback&& onProfile) {

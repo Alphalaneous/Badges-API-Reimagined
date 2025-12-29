@@ -16,6 +16,7 @@ class $modify(BadgesCommentCell, CommentCell) {
         CCNode* m_badgeNode;
         CCMenuItemSpriteExtra* m_badgesButton;
         std::vector<BadgeInfo> m_badges;
+        UserInfo m_userInfo;
     };
 
     void loadFromComment(GJComment* comment);

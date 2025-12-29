@@ -1,11 +1,12 @@
 #include "BadgesPopup.hpp"
+#include "Badges.hpp"
 
-BadgesPopup* BadgesPopup::create(const std::vector<BadgeInfo>& info, int page) {
+BadgesPopup* BadgesPopup::create(UserInfo userInfo, const std::vector<BadgeInfo>& info, int page) {
     auto ret = new BadgesPopup();
 
     auto winSize = CCDirector::get()->getWinSize();
 
-    if (ret->initAnchored(winSize.width, winSize.height, info, page)) {
+    if (ret->initAnchored(winSize.width, winSize.height, userInfo, info, page)) {
         ret->autorelease();
         return ret;
     }
@@ -14,7 +15,8 @@ BadgesPopup* BadgesPopup::create(const std::vector<BadgeInfo>& info, int page) {
     return nullptr;
 }
 
-bool BadgesPopup::setup(const std::vector<BadgeInfo>& info, int page) {
+bool BadgesPopup::setup(UserInfo userInfo, const std::vector<BadgeInfo>& info, int page) {
+    Badges::get()->onProfile(this, userInfo);
 
     setOpacity(0);
     m_bgSprite->removeFromParent();
