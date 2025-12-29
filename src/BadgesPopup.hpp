@@ -22,6 +22,6 @@ protected:
     CCMenuItemSpriteExtra* m_nextButton;
     CCNode* m_badgesContainer;
     CCLabelBMFont* m_title;
-    TextArea* m_description;
+    MDTextArea* m_description;
     std::map<CCNode*, BadgeInfo> m_badges;
 };

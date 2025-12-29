@@ -74,16 +74,19 @@ bool BadgesPopup::setup(UserInfo userInfo, const std::vector<BadgeInfo>& info, i
 
     m_title->runAction(CCFadeTo::create(0.1f, 255));
 
-    auto descScale = 0.75f;
+    auto desc = info[0].description;
+    if (desc.empty()) desc = "No description provided.";
 
-    m_description = TextArea::create(info[0].description, "chatFont.fnt", 1.f, 300.f / descScale, {0.5f, 0.5f}, 20, false);
+    m_description = MDTextArea::create(desc, {380.f, 100.f});
     m_description->setID("badge-description");
     m_description->setAnchorPoint({0.5f, 1.f});
-    m_description->setScale(descScale);
     m_description->setPosition({winSize.width/2, winSize.height/2 - 40});
-    m_description->setOpacity(0);
 
-    m_description->runAction(CCFadeTo::create(0.1f, 255));
+    auto menu = m_description->getScrollLayer()->m_contentLayer->getChildByType<CCMenu*>(0);
+    menu->setCascadeOpacityEnabled(true);
+
+    menu->setOpacity(0);
+    menu->runAction(CCFadeTo::create(0.1f, 255));
 
     m_mainLayer->addChild(m_title);
     m_mainLayer->addChild(m_description);

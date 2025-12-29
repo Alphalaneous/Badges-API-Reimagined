@@ -1,3 +1,7 @@
+# 1.0.3
+- Use MDTextArea instead of TextArea
+- If no description is provided, mention it
+
 # 1.0.2
 - Add methods for setting and getting the name and description; and setting the callbacks of a registered badge.
 - Limit title width if too long
