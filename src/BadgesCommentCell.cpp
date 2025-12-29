@@ -43,6 +43,7 @@ void BadgesCommentCell::loadFromComment(GJComment* comment) {
 
     fields->m_badgesButton = CCMenuItemSpriteExtra::create(fields->m_badgeNode, this, menu_selector(BadgesCommentCell::onBadges));
     fields->m_badgesButton->setID("badges-button"_spr);
+    fields->m_badgesButton->setTag(0);
 
     fields->m_usernameMenu->removeChild(badge);
     fields->m_usernameMenu->insertAfter(fields->m_badgesButton, fields->m_usernameNode);
@@ -102,5 +103,5 @@ void BadgesCommentCell::addToBadgeContainer(const BadgeInfo& info) {
 void BadgesCommentCell::onBadges(CCObject* sender) {
     auto fields = m_fields.self();
 
-    BadgesPopup::create(fields->m_badges)->show();
+    BadgesPopup::create(fields->m_badges, sender->getTag())->show();
 }

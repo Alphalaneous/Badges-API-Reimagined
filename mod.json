@@ -1,30 +1,38 @@
 {
-	"geode": "4.10.0",
-	"gd": {
-		"win": "2.2074",
-		"android": "2.2074",
-		"mac": "2.2074",
-		"ios": "2.2074"
-	},
-	"id": "alphalaneous.badges_api_reimagined",
-	"name": "Badges API Reimagined",
-	"version": "v1.0.0",
-	"developer": "Alphalaneous",
-	"description": "Easy to use Badges API",
-	"dependencies": {
-		"geode.node-ids": ">=v1.20.0"
-	},
-	"api": {
+    "geode": "4.10.0",
+    "gd": {
+        "win": "2.2074",
+        "android": "2.2074",
+        "mac": "2.2074",
+        "ios": "2.2074"
+    },
+    "id": "alphalaneous.badges_api_reimagined",
+    "name": "Badges API Reimagined",
+    "version": "v1.0.0",
+    "developer": "Alphalaneous",
+    "description": "Easy to use Badges API",
+    "dependencies": {
+        "geode.node-ids": ">=v1.20.0"
+    },
+    "api": {
         "include": [
             "include/*.hpp"
         ]
     },
-	"links": {
+    "links": {
         "homepage": "https://linktr.ee/Alphalaneous",
         "source": "https://github.com/Alphalaneous/Badges-API-Reimagined",
         "community": "https://discord.gg/Txn2CA5dHF"
     },
-	"tags": [
-		"developer", "interface", "api"
-	]
+    "tags": [
+        "developer", "interface", "api"
+    ],
+    "settings": {
+        "alternative-profile-badge-design": {
+            "name": "Show Badges Under Username",
+            "description": "Show badges under the username instead of next to it on the profile.",
+            "type": "bool",
+            "default": true
+        }
+    }
 }

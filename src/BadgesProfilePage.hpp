@@ -9,18 +9,23 @@ using namespace geode::prelude;
 class $modify(BadgesProfilePage, ProfilePage) {
 
     struct Fields {
-		CCPoint m_originalMenuPosition;
-		CCNode* m_usernameMenu;
-		CCNode* m_badgeNode;
+        CCPoint m_originalMenuPosition;
+        CCNode* m_usernameMenu;
+        CCNode* m_badgeNode;
+        CCMenu* m_badgeMenu;
         CCNode* m_infoButton;
-		CCMenuItemSpriteExtra* m_badgesButton;
-		std::vector<BadgeInfo> m_badges;
-	};
-
+        CCSprite* m_separatorLeft;
+        CCSprite* m_separatorRight;
+        CCMenuItemSpriteExtra* m_badgesButton;
+        std::vector<BadgeInfo> m_badges;
+        bool m_alterativeDesign;
+    };
+    
+    bool init(int accountID, bool ownProfile);
     void loadPageFromUserInfo(GJUserScore* score);
-	void addBadge(const BadgeInfo& info);
-	void updateBadges();
-	void addToBadgeContainer(const BadgeInfo& info);
-	void onBadges(CCObject* sender);
+    void addBadge(const BadgeInfo& info);
+    void updateBadges();
+    void addToBadgeContainer(const BadgeInfo& info);
+    void onBadges(CCObject* sender);
 
 };

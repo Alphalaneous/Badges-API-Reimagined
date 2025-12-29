@@ -12,10 +12,18 @@ $execute {
         return ListenerResult::Stop;
     });
 
+    new EventListener<EventFilter<BadgesAPI::UnregisterBadgeEvent>>(+[](BadgesAPI::UnregisterBadgeEvent* event) {
+        event->fn = +[](const std::string& id) {
+            Badges::get()->unregisterBadge(id);
+        };
+        return ListenerResult::Stop;
+    });
+
     new EventListener<EventFilter<BadgesAPI::ShowBadgeEvent>>(+[](BadgesAPI::ShowBadgeEvent* event) {
         event->fn = +[](const Badge& badge) {
             Badges::get()->showBadge(badge);
         };
         return ListenerResult::Stop;
     });
+    
 }

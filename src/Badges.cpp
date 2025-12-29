@@ -3,7 +3,6 @@
 #include "BadgesProfilePage.hpp"
 
 #include <Geode/Geode.hpp>
-#include <Geode/binding/GJUserScore.hpp>
 
 using namespace geode::prelude;
 
@@ -26,6 +25,10 @@ void Badges::showBadge(const Badge& badge) {
 
 void Badges::registerBadge(const std::string& id, const std::string& name, const std::string& description, BadgeCallback&& createBadge, ProfileCallback&& onProfile) {
     m_badges.emplace(id, BadgeInfo{id, name, description, std::move(createBadge), std::move(onProfile)});
+}
+
+void Badges::unregisterBadge(const std::string& id) {
+    m_badges.erase(id);
 }
 
 void Badges::onProfile(CCNode* node, const UserInfo& info) {

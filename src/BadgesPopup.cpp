@@ -1,11 +1,11 @@
 #include "BadgesPopup.hpp"
 
-BadgesPopup* BadgesPopup::create(const std::vector<BadgeInfo>& info) {
+BadgesPopup* BadgesPopup::create(const std::vector<BadgeInfo>& info, int page) {
     auto ret = new BadgesPopup();
 
     auto winSize = CCDirector::get()->getWinSize();
 
-    if (ret->initAnchored(winSize.width, winSize.height, info)) {
+    if (ret->initAnchored(winSize.width, winSize.height, info, page)) {
         ret->autorelease();
         return ret;
     }
@@ -14,7 +14,7 @@ BadgesPopup* BadgesPopup::create(const std::vector<BadgeInfo>& info) {
     return nullptr;
 }
 
-bool BadgesPopup::setup(const std::vector<BadgeInfo>& info) {
+bool BadgesPopup::setup(const std::vector<BadgeInfo>& info, int page) {
 
     setOpacity(0);
     m_bgSprite->removeFromParent();
@@ -43,14 +43,13 @@ bool BadgesPopup::setup(const std::vector<BadgeInfo>& info) {
         CCNodeRGBA* container = CCNodeRGBA::create();
         container->setID(fmt::format("{}-badge", badge.id).c_str());
 
-        container->setCascadeColorEnabled(true);
-        container->setCascadeOpacityEnabled(true);
         container->setAnchorPoint({0.5f, 0.5f});
-        container->setOpacity(0);
         
         auto node = badge.createBadge();
         node->setID("badge-node");
         container->addChild(node);
+
+        node->setOpacity(0);
 
         float scale = m_badgesContainer->getContentHeight() / node->getContentHeight();
         node->setScale(scale);
@@ -104,20 +103,6 @@ bool BadgesPopup::setup(const std::vector<BadgeInfo>& info) {
     m_prevButton->setOpacity(0);
     m_nextButton->setOpacity(0);
 
-    m_prevButton->setColor({127, 127, 127});
-    m_prevButton->runAction(CCFadeTo::create(0.1f, 127));
-
-    m_prevButton->setEnabled(false);
-
-    if (info.size() == 1) {
-        m_nextButton->setEnabled(false);
-        m_nextButton->setColor({127, 127, 127});
-        m_nextButton->runAction(CCFadeTo::create(0.1f, 127));
-    }
-    else {
-        m_nextButton->runAction(CCFadeTo::create(0.1f, 255));
-    }
-
     m_buttonMenu->setID("main-menu");
 
     m_buttonMenu->addChild(m_prevButton);
@@ -125,6 +110,8 @@ bool BadgesPopup::setup(const std::vector<BadgeInfo>& info) {
 
     m_closeBtn->setOpacity(0);
     m_closeBtn->runAction(CCFadeTo::create(0.1f, 255));
+
+    m_page = page;
 
     goToPage(true);
 
@@ -146,8 +133,10 @@ void BadgesPopup::goToPrevPage(CCObject* sender) {
 void BadgesPopup::setBadge(int page, float opacity, float xOffset, float scale, bool instant) {
     if (page >= 0 && page <= m_badges.size() - 1) {
         auto node = static_cast<CCNodeRGBA*>(m_badgesContainer->getChildrenExt()[page]);
+        auto badge = static_cast<CCNodeRGBA*>(node->getChildrenExt()[0]);
         node->stopAllActions();
-        node->runAction(CCFadeTo::create(0.1f, opacity));
+        badge->stopAllActions();
+        badge->runAction(CCFadeTo::create(0.1f, opacity));
 
         if (instant) {
             node->setPositionX(m_badgesContainer->getContentWidth()/2.f + xOffset);
@@ -165,21 +154,25 @@ void BadgesPopup::setNavigationButtonStates() {
     m_nextButton->setEnabled(m_page != m_badges.size() - 1);
 
     if (m_page == 0) {
-        m_prevButton->setColor({127, 127, 127});
-        m_prevButton->setOpacity(127);
+        m_prevButton->stopAllActions();
+        m_prevButton->runAction(CCTintTo::create(0.1f, 127, 127, 127));
+        m_prevButton->runAction(CCFadeTo::create(0.1f, 127));
     }
     else {
-        m_prevButton->setColor({255, 255, 255});
-        m_prevButton->setOpacity(255);
+        m_prevButton->stopAllActions();
+        m_prevButton->runAction(CCTintTo::create(0.1f, 255, 255, 255));
+        m_prevButton->runAction(CCFadeTo::create(0.1f, 255));
     }
 
     if (m_page == m_badges.size() - 1) {
-        m_nextButton->setColor({127, 127, 127});
-        m_nextButton->setOpacity(127);
+        m_nextButton->stopAllActions();
+        m_nextButton->runAction(CCTintTo::create(0.1f, 127, 127, 127));
+        m_nextButton->runAction(CCFadeTo::create(0.1f, 127));
     }
     else {
-        m_nextButton->setColor({255, 255, 255});
-        m_nextButton->setOpacity(255);
+        m_nextButton->stopAllActions();
+        m_nextButton->runAction(CCTintTo::create(0.1f, 255, 255, 255));
+        m_nextButton->runAction(CCFadeTo::create(0.1f, 255));
     }
 }
 
@@ -196,9 +189,7 @@ void BadgesPopup::goToPage(bool instant) {
     m_prevButton->setEnabled(m_page != 0);
     m_nextButton->setEnabled(m_page != m_badges.size() - 1);
 
-    if (!instant) {
-        setNavigationButtonStates();
-    }
+    setNavigationButtonStates();
 }
 
 void BadgesPopup::keyDown(cocos2d::enumKeyCodes key) {

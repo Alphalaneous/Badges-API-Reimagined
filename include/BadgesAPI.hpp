@@ -27,8 +27,8 @@ using ProfileCallback = std::function<void(const Badge& badge, const UserInfo& s
 
 struct BadgeInfo {
     std::string id;
-	std::string name;
-	std::string description;
+    std::string name;
+    std::string description;
     BadgeCallback createBadge;
     ProfileCallback onProfile;
 };
@@ -37,6 +37,12 @@ namespace BadgesAPI {
     struct RegisterBadgeEvent final : geode::Event {
         RegisterBadgeEvent() {}
         using Fn = void(const std::string& id, const std::string& name, const std::string& description, BadgeCallback&& createBadge, ProfileCallback&& onProfile);
+        Fn* fn = nullptr;
+    };
+
+    struct UnregisterBadgeEvent final : geode::Event {
+        UnregisterBadgeEvent() {}
+        using Fn = void(const std::string& id);
         Fn* fn = nullptr;
     };
 
@@ -77,6 +83,15 @@ namespace BadgesAPI {
             })();
             if (fn) fn(id, name, description, createBadge, onProfile);
         });
+    }
+
+    inline void unregisterBadge(const std::string& id) {
+        static auto fn = ([] {
+            UnregisterBadgeEvent event;
+            event.post();
+            return event.fn;
+        })();
+        if (fn) fn(id);
     }
 
     inline void showBadge(const Badge& badge) {

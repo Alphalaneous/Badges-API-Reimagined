@@ -5,11 +5,11 @@
 
 using namespace geode::prelude;
 
-class BadgesPopup : public Popup<const std::vector<BadgeInfo>&> {
+class BadgesPopup : public Popup<const std::vector<BadgeInfo>&, int> {
 public:
-    static BadgesPopup* create(const std::vector<BadgeInfo>& info);
+    static BadgesPopup* create(const std::vector<BadgeInfo>& info, int page);
 protected:
-    bool setup(const std::vector<BadgeInfo>& info) override;
+    bool setup(const std::vector<BadgeInfo>& info, int page) override;
     void goToNextPage(CCObject* sender);
     void goToPrevPage(CCObject* sender);
     void setBadge(int page, float opacity, float xOffset, float scale, bool instant);

@@ -26,6 +26,10 @@ $execute {
             if (info.modStatus == ModStatus::REGULAR) BadgesAPI::showBadge(badge);
         }
     );
+
+    // And for unregistering:
+
+    BadgesAPI::unregisterBadge("your-badge-id"_spr);
 }
 ```
 
