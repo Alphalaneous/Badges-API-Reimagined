@@ -22,7 +22,7 @@ struct Badge {
     geode::Ref<cocos2d::CCNode> targetNode;
 };
 
-using BadgeCallback = std::function<cocos2d::CCNodeRGBA*()>;
+using BadgeCallback = std::function<cocos2d::CCNode*()>;
 using ProfileCallback = std::function<void(const Badge& badge, const UserInfo& score)>;
 
 struct BadgeInfo {

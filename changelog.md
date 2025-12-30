@@ -1,3 +1,6 @@
+# 1.0.4
+- Fix a goof
+
 # 1.0.3
 - Use MDTextArea instead of TextArea
 - If no description is provided, mention it

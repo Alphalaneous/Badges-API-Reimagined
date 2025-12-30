@@ -51,7 +51,9 @@ bool BadgesPopup::setup(UserInfo userInfo, const std::vector<BadgeInfo>& info, i
         node->setID("badge-node");
         container->addChild(node);
 
-        node->setOpacity(0);
+        if (auto rgba = typeinfo_cast<CCRGBAProtocol*>(node)) {
+            rgba->setOpacity(0);
+        }
 
         float scale = m_badgesContainer->getContentHeight() / node->getContentHeight();
         node->setScale(scale);
