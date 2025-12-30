@@ -218,7 +218,7 @@ void BadgesProfilePage::addToBadgeContainer(const BadgeInfo& info) {
         node->setID(fmt::format("{}-badge", info.id));
 
         fields->m_badgeNode->addChild(node);
-        runAction(CallFuncExt::create([this, node] {
+        runAction(CallFuncExt::create([this, node = Ref(node)] {
             unregisterTouchesRecursive(node);
         }));
 
@@ -239,10 +239,10 @@ void BadgesProfilePage::addToBadgeContainer(const BadgeInfo& info) {
         btn->setTag(fields->m_badges.size() - 1);
 
         fields->m_badgeMenu->addChild(btn);
-        runAction(CallFuncExt::create([this, node] {
+        runAction(CallFuncExt::create([this, node = Ref(node)] {
             unregisterTouchesRecursive(node);
         }));
-        
+
         updateBadges();
     }
 }

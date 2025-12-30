@@ -109,7 +109,7 @@ void BadgesCommentCell::addToBadgeContainer(const BadgeInfo& info) {
     node->setID(fmt::format("{}-badge", info.id));
 
     fields->m_badgeNode->addChild(node);
-    runAction(CallFuncExt::create([this, node] {
+    runAction(CallFuncExt::create([this, node = Ref(node)] {
         unregisterTouchesRecursive(node);
     }));
 
